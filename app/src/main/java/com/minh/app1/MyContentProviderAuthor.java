@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -77,11 +78,31 @@ public class MyContentProviderAuthor extends ContentProvider {
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        DBHelper dbHelper = new DBHelper(context);
-        db = dbHelper.getWritableDatabase();
+        SQLiteOpenHelper sqLiteOpenHelper = new SQLiteOpenHelper(context, "BookDatabase.sqlite", null, 1) {
+            @Override
+            public void onCreate(SQLiteDatabase sqLiteDatabase) {
+                String author = "create table Authors(id_author integer primary key, name text, address text, email text)";
+                sqLiteDatabase.execSQL(author);
+                String book = "create table Books(id_book integer primary key, title text, " +
+                        "id_author integer constraint id_author references Authors(id_author) on delete cascade on update cascade)";
+                sqLiteDatabase.execSQL(book);
+            }
+
+            @Override
+            public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+                String book = "drop table if exists Books";
+                String author = "drop table if exists Authors";
+                sqLiteDatabase.execSQL(book);
+                sqLiteDatabase.execSQL(author);
+                onCreate(sqLiteDatabase);
+            }
+        };
+        db = sqLiteOpenHelper.getWritableDatabase();
         if (db == null)
             return false;
         return true;
+
+
     }
 
     @Override

@@ -19,7 +19,6 @@ public class AuthorActivity extends AppCompatActivity {
     EditText editText_maso, editText_diachi, editText_email, editText_hoten;
     Button button_select, button_save, button_update, button_delete, button_exit;
     GridView gridView_display;
-    DBHelper dbHelper;
     private ArrayAdapter<String> adapter;
 
 
@@ -129,6 +128,5 @@ public class AuthorActivity extends AppCompatActivity {
         button_exit = (Button) findViewById(R.id.button_exit);
 
         gridView_display = (GridView) findViewById(R.id.gridView_display);
-        dbHelper = new DBHelper(AuthorActivity.this);
     }
 }

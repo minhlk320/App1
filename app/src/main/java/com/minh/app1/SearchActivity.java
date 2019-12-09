@@ -19,7 +19,6 @@ public class SearchActivity extends AppCompatActivity {
     Button btn_exit, btn_find;
     EditText edt_IDauthor;
     GridView gridView;
-    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
